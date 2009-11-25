@@ -1,0 +1,184 @@
+<?php
+
+include_once('atrium_reader.features.inc');
+
+/**
+ * Implementation of hook_help().
+ */
+function atrium_reader_help($path) {
+  if (($path == 'help#atrium_reader') || (context_get('spaces', 'feature') == 'reader')) {
+    switch ($path) {
+      case 'node/add/feed-reader':
+      case 'node/%/edit':
+        $atom_link = l(t('Atom'), 'http://en.wikipedia.org/wiki/Atom_%28standard%29', array('absolute' => TRUE));
+        $rss_link = l(t('RSS'), 'http://en.wikipedia.org/wiki/RSS', array('absolute' => TRUE));
+        $help = '';
+        $help .= '<h3>'. t('Reader') .'</h3>';
+        $help .= '<p>'. t('Tips for adding and editing feeds:') .'</p>';
+        $help .= '<ul>';
+        $help .= '<li>'. t('Add the title of your feed. You can leave it blank to use the default title provided by the feed itself.') .'</li>';
+        $help .= '<li>'. t('Enter the URL of the !atom or !rss feed you would like to subscribe to.', array('!atom' => $atom_link, '!rss' => $rss_link)) .'</li>';
+        $help .= '</ul>';
+        return $help;
+
+      case 'help#atrium_reader':
+      default:
+        $help = '';
+        $help .= '<h3>'. t('Reader') .'</h3>';
+        $help .= '<p>'. t('The Reader gives you a way to subscribe to news in your groups and share stories with your team members. You can add news, image and twitter feeds to each group.') .'</p>';
+        return $help;
+    }
+  }
+}
+
+/**
+ * Implementation of hook_init().
+ */
+function atrium_reader_init() {
+  drupal_add_css(drupal_get_path('module', 'atrium_reader') .'/atrium_reader.css');
+}
+
+/**
+ * Implementation of hook_views_api().
+ */
+function atrium_reader_views_api() {
+  return array(
+    'api' => 2,
+    'path' => drupal_get_path('module', 'atrium_reader') .'/views',
+  );
+}
+
+/**
+ * Returns valid feed type options for reader feeds.
+ */
+function atrium_reader_get_types() {
+  $options = array();
+  if ($view = views_get_view('atrium_reader')) {
+    $view->build();
+    foreach ($view->display as $display_id => $display) {
+      if ($display_id != 'default' && !preg_match('/^block_/', $display_id)) {
+        $options[$display->display_title] = $display->handler->get_option('title');
+      }
+    }
+  }
+  return $options;
+}
+
+/**
+ * Implementation of hook_menu().
+ */
+function atrium_reader_menu() {
+  $items = array();
+  $items['reader'] = array(
+    'title' => 'Feed reader',
+    'page callback' => 'atrium_reader_reader',
+    'page arguments' => array(),
+    'access callback' => 'atrium_reader_access',
+    'access arguments' => array(),
+    'type' => MENU_NORMAL_ITEM,
+    'menu_name' => 'features'
+  );
+  $items['reader/all'] = array(
+    'title' => 'All',
+    'page callback' => 'atrium_reader_reader',
+    'page arguments' => array('all', 2),
+    'access callback' => 'atrium_reader_access',
+    'access arguments' => array(),
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => -10,
+  );
+  return $items;
+}
+
+/**
+ * Implementation of preprocess_views_view().
+ */
+function atrium_reader_preprocess_views_view(&$vars) {
+  if($vars['view'] & $vars['view']->name == 'atrium_reader' && $vars['view']->current_display == 'block_1') {
+    $vars['more'] = str_replace('reader/news', 'reader', $vars['more']);
+  }
+}
+
+/**
+ * Menu access callback.
+ */
+function atrium_reader_access($type = NULL) {
+  $space = spaces_get_space();
+  if ($space) {
+    return spaces_method('feature_access', NULL, 'atrium_reader');
+  }
+  else if (isset($type)) {
+    static $types;
+    if (!isset($types)) {
+      $types = array();
+      if ($view = views_get_view('atrium_reader_feeds')) {
+        $view->set_display('default');
+        $view->set_items_per_page(0);
+        $view->execute();
+        $alias = $view->field['field_reader_feedtype_value']->field_alias;
+        foreach ($view->result as $row) {
+          $types[$row->{$alias}] = $row->{$alias};
+        }
+      }
+    }
+    return isset($types[$type]);
+  }
+  return TRUE;
+}
+
+/**
+ * Page callback.
+ */
+function atrium_reader_reader() {
+  context_set('spaces', 'feature', 'reader');
+
+  $accessible = array();
+  foreach (array('news', 'image', 'twitter') as $type) {
+    if (atrium_reader_access($type)) {
+      $accessible[] = $type;
+    }
+  }
+
+  if (count($accessible) >= 2) {
+    context_set('spaces', 'reader', 'overview');
+    $args = func_get_args();
+    array_unshift($args, 'atrium_reader', 'default');
+    return call_user_func_array('views_embed_view', $args);
+  }
+  else if (count($accessible) == 1) {
+    $view = views_get_view('atrium_reader');
+    foreach ($view->display as $display_id => $display) {
+      if ($display->display_title == $accessible[0]) {
+        return $view->execute_display($display_id);
+      }
+    }
+  }
+
+  // No feeds are available, leave a message after the tone.
+  $item = menu_get_item('node/add/feed-reader');
+  if ($item && $item['access']) {
+    $message = t('Please add your first !type to get started.', array('!type' => node_get_types('name', 'feed_reader')));
+    $message .= "<div class='buttons'>". l('+ '. t('Add !type', array('!type' => node_get_types('name', 'feed_reader'))), $item['href'], array('attributes' => array('class' => 'button'))) ."</div>";
+  }
+  else {
+    $message = t('No items found.');
+  }
+  return "<div class='view-empty'>{$message}</div>";
+}
+
+/**
+ * Implementation of hook_nodeapi().
+ */
+function atrium_reader_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
+  if ($op == 'view' && $node->type == 'feed_reader' && menu_get_object() === $node) {
+    $type = !empty($node->field_reader_feedtype[0]['value']) ? $node->field_reader_feedtype[0]['value'] : 'news';
+    drupal_goto("reader/{$type}/{$node->nid}");
+  }
+}
+
+/**
+ * Implementation of hook_data_views_handlers_alter().
+ */
+function atrium_reader_data_views_handlers_alter(&$handlers) {
+  $handlers['field']['atrium_reader_handler_field_description'] = 'atrium_reader_handler_field_description';
+}
