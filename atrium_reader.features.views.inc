@@ -1148,7 +1148,7 @@ function _atrium_reader_views_default_views() {
     'columns' => '4',
     'alignment' => 'horizontal',
   ));
-  $handler->override_option('block_description', '');
+  $handler->override_option('block_description', 'Latest images');
   $handler->override_option('block_caching', -1);
   $handler = $view->new_display('block', 'Reader: Latest tweets', 'block_2');
   $handler->override_option('fields', array(
@@ -1334,7 +1334,7 @@ function _atrium_reader_views_default_views() {
     'grouping' => '',
     'type' => 'ul',
   ));
-  $handler->override_option('block_description', '');
+  $handler->override_option('block_description', 'Latest tweets');
   $handler->override_option('block_caching', -1);
   $handler = $view->new_display('block', 'Reader: Latest news', 'block_3');
   $handler->override_option('filters', array(
@@ -1386,7 +1386,7 @@ function _atrium_reader_views_default_views() {
     ),
   ));
   $handler->override_option('title', 'News');
-  $handler->override_option('block_description', '');
+  $handler->override_option('block_description', 'Latest news');
   $handler->override_option('block_caching', -1);
 
   $views[$view->name] = $view;
