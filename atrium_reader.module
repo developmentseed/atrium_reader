@@ -103,11 +103,12 @@ function atrium_reader_preprocess_views_view(&$vars) {
  * Menu access callback.
  */
 function atrium_reader_access($type = NULL) {
-  $space = spaces_get_space();
-  if ($space) {
-    return spaces_method('feature_access', NULL, 'atrium_reader');
+  $access = TRUE;
+  if (module_exists('spaces')) {
+    $access = $access && spaces_feature_access('atrium_reader');
   }
-  else if (isset($type)) {
+
+  if (isset($type)) {
     static $types;
     if (!isset($types)) {
       $types = array();
@@ -121,9 +122,9 @@ function atrium_reader_access($type = NULL) {
         }
       }
     }
-    return isset($types[$type]);
+    $access = $access && isset($types[$type]);
   }
-  return TRUE;
+  return $access;
 }
 
 /**
