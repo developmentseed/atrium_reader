@@ -1707,7 +1707,7 @@ function _atrium_reader_views_default_views() {
       'validate_argument_php' => '',
     ),
   ));
-  $handler->override_option('block_description', '');
+  $handler->override_option('block_description', 'Feeds');
   $handler->override_option('block_caching', -1);
 
   $views[$view->name] = $view;
