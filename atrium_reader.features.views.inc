@@ -1007,6 +1007,20 @@ function _atrium_reader_views_default_views() {
       'field' => 'status',
       'relationship' => 'feed_nid_1',
     ),
+    'nid' => array(
+      'operator' => '=',
+      'value' => '',
+      'group' => '0',
+      'exposed' => FALSE,
+      'expose' => array(
+        'operator' => FALSE,
+        'label' => '',
+      ),
+      'id' => 'nid',
+      'table' => 'node_access',
+      'field' => 'nid',
+      'relationship' => 'feed_nid_1',
+    ),
   ));
   $handler->override_option('access', array(
     'type' => 'atrium_reader',
@@ -1134,6 +1148,12 @@ function _atrium_reader_views_default_views() {
       'override' => array(
         'button' => 'Use default',
       ),
+    ),
+    'nid' => array(
+      'id' => 'nid',
+      'table' => 'node_access',
+      'field' => 'nid',
+      'relationship' => 'feed_nid_1',
     ),
   ));
   $handler->override_option('access', array(
@@ -1323,6 +1343,23 @@ function _atrium_reader_views_default_views() {
         'button' => 'Use default',
       ),
     ),
+    'nid' => array(
+      'operator' => '=',
+      'value' => '',
+      'group' => '0',
+      'exposed' => FALSE,
+      'expose' => array(
+        'operator' => FALSE,
+        'label' => '',
+      ),
+      'id' => 'nid',
+      'table' => 'node_access',
+      'field' => 'nid',
+      'relationship' => 'feed_nid_1',
+      'override' => array(
+        'button' => 'Use default',
+      ),
+    ),
   ));
   $handler->override_option('access', array(
     'type' => 'atrium_reader',
@@ -1379,6 +1416,23 @@ function _atrium_reader_views_default_views() {
       'id' => 'field_reader_feedtype_value',
       'table' => 'node_data_field_reader_feedtype',
       'field' => 'field_reader_feedtype_value',
+      'relationship' => 'feed_nid_1',
+      'override' => array(
+        'button' => 'Use default',
+      ),
+    ),
+    'nid' => array(
+      'operator' => '=',
+      'value' => '',
+      'group' => '0',
+      'exposed' => FALSE,
+      'expose' => array(
+        'operator' => FALSE,
+        'label' => '',
+      ),
+      'id' => 'nid',
+      'table' => 'node_access',
+      'field' => 'nid',
       'relationship' => 'feed_nid_1',
       'override' => array(
         'button' => 'Use default',
