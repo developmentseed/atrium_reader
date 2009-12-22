@@ -94,7 +94,7 @@ function atrium_reader_menu() {
  * Implementation of preprocess_views_view().
  */
 function atrium_reader_preprocess_views_view(&$vars) {
-  if($vars['view'] & $vars['view']->name == 'atrium_reader' && $vars['view']->current_display == 'block_1') {
+  if($vars['view'] && $vars['view']->name == 'atrium_reader' && $vars['view']->current_display == 'block_1') {
     $vars['more'] = str_replace('reader/news', 'reader', $vars['more']);
   }
 }
