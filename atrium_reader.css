@@ -24,7 +24,7 @@ div.view-atrium-reader .item-list li {
 
 div.view-atrium-reader .item-list .description { font-size:13px; }
 
-body.page-reader-twitter .view-atrium-reader .description,
+body.page-reader .view-display-id-page_3 .description, /* Twitter page */
 div.view-atrium-reader .item-list .title {
   font-size:16px;
   line-height:20px;
