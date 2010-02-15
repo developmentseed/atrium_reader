@@ -143,6 +143,7 @@ function _atrium_reader_views_default_views() {
         'alt' => '',
         'prefix' => '',
         'suffix' => '',
+        'target' => '',
         'help' => '',
         'trim' => 0,
         'max_length' => '',
@@ -151,6 +152,9 @@ function _atrium_reader_views_default_views() {
         'strip_tags' => 0,
         'html' => 0,
       ),
+      'empty' => '',
+      'hide_empty' => 0,
+      'empty_zero' => 0,
       'exclude' => 0,
       'id' => 'title',
       'table' => 'feeds_data_feed_reader',
@@ -629,6 +633,7 @@ function _atrium_reader_views_default_views() {
         'alt' => '',
         'prefix' => '',
         'suffix' => '',
+        'target' => '',
         'help' => '',
         'trim' => 0,
         'max_length' => '',
@@ -637,6 +642,9 @@ function _atrium_reader_views_default_views() {
         'strip_tags' => 0,
         'html' => 0,
       ),
+      'empty' => '',
+      'hide_empty' => 0,
+      'empty_zero' => 0,
       'truncate' => '0',
       'filter_html' => 'twitter',
       'allowed_tags' => '',
@@ -727,6 +735,17 @@ function _atrium_reader_views_default_views() {
     'description' => '',
     'weight' => 0,
   ));
+  $translatables['atrium_reader'] = array(
+    t('Defaults'),
+    t('Feed reader'),
+    t('Images'),
+    t('News'),
+    t('No items found.'),
+    t('Twitter'),
+    t('image'),
+    t('news'),
+    t('twitter'),
+  );
 
   $views[$view->name] = $view;
 
@@ -1442,6 +1461,19 @@ function _atrium_reader_views_default_views() {
   $handler->override_option('title', 'News');
   $handler->override_option('block_description', 'Latest news');
   $handler->override_option('block_caching', -1);
+  $translatables['atrium_reader_blocks'] = array(
+    t('Defaults'),
+    t('Feed reader'),
+    t('Images'),
+    t('Latest images'),
+    t('Latest news'),
+    t('Latest tweets'),
+    t('News'),
+    t('Reader: Latest images'),
+    t('Reader: Latest news'),
+    t('Reader: Latest tweets'),
+    t('Twitter'),
+  );
 
   $views[$view->name] = $view;
 
@@ -1763,6 +1795,11 @@ function _atrium_reader_views_default_views() {
   ));
   $handler->override_option('block_description', 'Feeds');
   $handler->override_option('block_caching', -1);
+  $translatables['atrium_reader_feeds'] = array(
+    t('Defaults'),
+    t('Feeds'),
+    t('Feeds block'),
+  );
 
   $views[$view->name] = $view;
 

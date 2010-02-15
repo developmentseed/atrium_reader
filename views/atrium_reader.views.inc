@@ -28,6 +28,9 @@ function atrium_reader_views_handlers() {
       'atrium_reader_handler_field_description' => array(
         'parent' => 'views_handler_field',
       ),
+      'atrium_reader_handler_field_title' => array(
+        'parent' => 'views_handler_field',
+      ),
     ),
   );
 }

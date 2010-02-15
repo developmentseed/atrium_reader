@@ -131,6 +131,12 @@ function _atrium_reader_context_default_contexts() {
   $context->reactions = array(
     'menu' => 'reader',
   );
+  $context->condition_mode = 0;
+
+  $translatables['atrium_reader'] = array(
+    t('Featurewide context for Atrium Reader.'),
+    t('atrium_reader'),
+  );
 
   $export['atrium_reader'] = $context;
   $context = new stdClass;
@@ -193,6 +199,12 @@ function _atrium_reader_context_default_contexts() {
       'class' => '',
     ),
   );
+  $context->condition_mode = 0;
+
+  $translatables['atrium_reader_listing'] = array(
+    t('Single feed item listing page within the reader.'),
+    t('atrium_reader'),
+  );
 
   $export['atrium_reader_listing'] = $context;
   $context = new stdClass;
@@ -231,6 +243,12 @@ function _atrium_reader_context_default_contexts() {
       'class' => '',
     ),
   );
+  $context->condition_mode = 0;
+
+  $translatables['atrium_reader_overview'] = array(
+    t('Overview/landing page for reader.'),
+    t('atrium_reader'),
+  );
 
   $export['atrium_reader_overview'] = $context;
   return $export;
@@ -252,7 +270,7 @@ function _atrium_reader_ctools_plugin_api() {
   else if ($module == "feeds" && $api == "feeds_importer_default") {
     return array("version" => 1);
   }
-  else if ($module == "system" && $api == "strongarm") {
+  else if ($module == "strongarm" && $api == "strongarm") {
     return array("version" => 1);
   }
 }
@@ -375,7 +393,7 @@ function _atrium_reader_data_default() {
       'title' => array(
         'label' => '',
         'search' => 1,
-        'views_field_handler' => 'views_handler_field',
+        'views_field_handler' => 'atrium_reader_handler_field_title',
         'views_filter_handler' => 'views_handler_filter_string',
         'views_argument_handler' => 'views_handler_argument',
         'views_sort_handler' => 'views_handler_sort',

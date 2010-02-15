@@ -9,25 +9,26 @@ body span.feature-atrium_reader { background:url(images/icon.png) 0px -40px no-r
 /**
  * News tab ===========================================================
  */
-div.view-atrium-reader-blocks div.item-list .related-title,
-div.view-atrium-reader-blocks div.item-list .author,
-div.view-atrium-reader div.item-list .author,
-div.view-atrium-reader div.item-list .related-title {
+div.view-atrium-reader-blocks .item-list .related-title,
+div.view-atrium-reader-blocks .item-list .author,
+div.view-atrium-reader .item-list .author,
+div.view-atrium-reader .item-list .related-title {
   font-size:11px;
   font-weight:bold;
   }
 
-div.view-atrium-reader div.item-list .title {
-  font-size:16px;
-  border-bottom:1px solid #eee;
+div.view-atrium-reader .item-list li {
+  padding-top:10px;
   padding-bottom:9px;
-  margin-bottom:10px;
   }
 
-/**
- * Twitter tab ========================================================
- */
-body.page-reader div.main div.view-display-id-page_3 .description { font-size:16px; }
+div.view-atrium-reader .item-list .description { font-size:13px; }
+
+body.page-reader-twitter .view-atrium-reader .description,
+div.view-atrium-reader .item-list .title {
+  font-size:16px;
+  line-height:20px;
+  }
 
 /**
  * Images tab =========================================================
